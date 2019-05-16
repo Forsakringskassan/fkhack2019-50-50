@@ -1,6 +1,6 @@
 import { REQUEST_PAYMENT, REQUEST_PAYMENT_SUCCESS, REQUEST_PAYMENT_ERROR } from '../action/PaymentEntityAction'
 
-export function paymentEntityReducer(state = { isBusy: false, allIds: [] }, action) {
+export function paymentEntityReducer(state = { isBusy: false, byCustomerId: {}, allIds: [] }, action) {
     switch (action.type) {
         case REQUEST_PAYMENT:
             return handleRequestPayment(state, action)
@@ -18,7 +18,13 @@ function handleRequestPayment(state, action) {
 }
 
 function handleRequestPaymentSuccess(state, action) {
-    return Object.assign({}, state, { isBusy: false })
+    let newstate = Object.assign({}, state, { isBusy: false })
+    action.payments._emdedded.forEach(payment => {
+        const customerId = payment.to
+        newstate.byCustomerId[customerId] = payment
+    })
+
+    return newstate
 }
 
 function handleRequestPaymentError(state, action) {

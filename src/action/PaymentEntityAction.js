@@ -1,7 +1,7 @@
 import fetch from 'cross-fetch'
 
 export const REQUEST_PAYMENT = 'REQUEST_PAYMENT'
-export const REQUEST_PAYMENT_SUCCESS = 'REQUEST_PAYMENT'
+export const REQUEST_PAYMENT_SUCCESS = 'REQUEST_PAYMENT_SUCCESS'
 export const REQUEST_PAYMENT_ERROR = 'REQUEST_PAYMENT_ERROR'
 
 export function requestPayment(id) {
@@ -25,11 +25,11 @@ export function requestPaymentError(err) {
     }
 }
 
-export function fetchPayment(id) {
+export function fetchPayment(customerId) {
     return function (dispatch) {
-        dispatch(requestPayment(id));
+        dispatch(requestPayment(customerId));
 
-        const fetchUrl = 'api/payment' + id ? '/' + id : ''
+        const fetchUrl = 'http://35.228.149.52/payments/' + customerId
         return (
             fetch(fetchUrl)
                 .then(
@@ -38,7 +38,7 @@ export function fetchPayment(id) {
                         dispatch(
                             requestPaymentError({
                                 msg: 'Error fetching payment',
-                                id
+                                customerId
                             })
                         );
                     }
