@@ -1,0 +1,26 @@
+import { REQUEST_PAYMENT, REQUEST_PAYMENT_SUCCESS, REQUEST_PAYMENT_ERROR } from '../action/PaymentEntityAction'
+
+export function paymentEntityReducer(state = { isBusy: false, allIds: [] }, action) {
+    switch (action.type) {
+        case REQUEST_PAYMENT:
+            return handleRequestPayment(state, action)
+        case REQUEST_PAYMENT_SUCCESS:
+            return handleRequestPaymentSuccess(state, action)
+        case REQUEST_PAYMENT_ERROR:
+            return handleRequestPaymentError(state, action)
+        default:
+            return state
+    }
+}
+
+function handleRequestPayment(state, action) {
+    return Object.assign({}, state, { isBusy: true })
+}
+
+function handleRequestPaymentSuccess(state, action) {
+    return Object.assign({}, state, { isBusy: false })
+}
+
+function handleRequestPaymentError(state, action) {
+    return Object.assign({}, state, { isBusy: false })
+}
