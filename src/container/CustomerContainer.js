@@ -1,11 +1,52 @@
 import React, { Component } from 'react';
-import { Container, Form, Input, Header, Table } from 'semantic-ui-react'
+import { Container, Form, Input, Header, Table, Modal, Button, Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { fetchCustomer, selectCustomer } from '../action/CustomerEntityAction'
 import { fetchPayment } from '../action/PaymentEntityAction'
+import { updatePaymentForm, postPayment } from '../action/PaymentFormAction'
+
+
+
+function NewPaymentModal(props) {
+
+    return (
+        <Modal trigger={<Button>New payment</Button>} size='small'>
+            <Header icon='archive' content='Archive Old Messages' />
+            <Modal.Content>
+            <Form>
+                <Form.Field>
+                    <label>Payment Date</label>
+                    <input type='text' value={props.paymentDate} onChange={(e) => props.onUpdate({payment_to: props.id, paymentDate: e.target.value})}></input>
+                </Form.Field>
+                <Form.Field>
+                    <label>From</label>
+                    <input type='text' value={props.from} onChange={(e) => props.onUpdate({payment_to: props.id, from: e.target.value})}></input>
+                </Form.Field>
+                <Form.Field>
+                    <label>Amount</label>
+                    <input type='text' value={props.amount} onChange={(e) => props.onUpdate({payment_to: props.id, amount: e.target.value})}></input>
+                </Form.Field>
+                <Form.Field>
+                    <label>Currency</label>
+                    <input type='text' value={props.currency} onChange={(e) => props.onUpdate({payment_to: props.id, currency: e.target.value})}></input>
+                </Form.Field>
+            </Form>
+                
+            </Modal.Content>
+            <Modal.Actions>
+                <Button basic color='red' inverted>
+                    <Icon name='remove' /> No
+                </Button>
+                <Button color='green' inverted onClick={(e) => props.onSave(props.data)}>
+                    <Icon name='checkmark' /> Yes
+                </Button>
+            </Modal.Actions>
+        </Modal>
+    )
+}
 
 function Payments(props) {
-    const payments = props.payments.map(p => {
+    const payments = props.payments ? props.payments.map(p => {
         return (
             <Table.Row>
                 <Table.Cell>{props.payment_date}</Table.Cell>
@@ -16,7 +57,7 @@ function Payments(props) {
                 <Table.Cell>{props.currency}</Table.Cell>
             </Table.Row>
         )
-    })
+    }) : []
 
     return (
         < Table celled>
@@ -64,7 +105,9 @@ class Customer extends Component {
                         <Input>{this.props.paymentMethod}</Input>
                     </Form.Field>
                 </Form>
+                <NewPaymentModal id={this.props.id} data={this.props.paymentForm} onUpdate={this.props.updatePaymentForm} onSave={this.props.postPayment}></NewPaymentModal>
                 <Payments payments={this.props.payments}></Payments>
+
             </Container>
         )
     }
@@ -76,7 +119,8 @@ const mapStateToProps = (state) => {
             isBusy: true,
             name: null,
             paymentMethod: null,
-            payments: []
+            payments: [],
+            paymentForm: null
         }
     }
 
@@ -85,7 +129,8 @@ const mapStateToProps = (state) => {
         isBusy: true,
         name: state.customers.byId[state.customers.selectedCustomerId].name,
         paymentMethod: state.customers.byId[state.customers.selectedCustomerId].paymentMethod,
-        payments: state.payments.byCustomerId[state.customers.selectedCustomerId]
+        payments: state.payments.byCustomerId[state.customers.selectedCustomerId],
+        paymentForm: state.paymentForm
     }
 }
 
@@ -93,7 +138,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         fetchCustomer: (id) => dispatch(fetchCustomer(id)),
         selectCustomer: (id) => dispatch(selectCustomer(id)),
-        fetchPayment: (id) => dispatch(fetchPayment(id))
+        fetchPayment: (id) => dispatch(fetchPayment(id)),
+        updatePaymentForm: (data) => dispatch(updatePaymentForm(data)),
+        postPayment: (payment) => dispatch(postPayment(payment))
     }
 }
 
