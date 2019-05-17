@@ -38,7 +38,7 @@ export function postPayment(payment) {
         payment.payment_from = 'FK'
         payment.description = 'TFP'
         payment.payment_date = payment.paymentDate
-        const postUrl = 'http://35.228.149.52/payments/' + customerId
+        const postUrl = 'http://192.168.99.100:8080/payments/' + customerId
         return (
             fetch(postUrl, {
                 method: 'POST',

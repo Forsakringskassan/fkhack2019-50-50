@@ -29,7 +29,7 @@ export function fetchPayment(customerId) {
     return function (dispatch) {
         dispatch(requestPayment(customerId));
 
-        const fetchUrl = 'http://35.228.149.52/payments/' + customerId
+        const fetchUrl = 'http://192.168.99.100:8080/payments/' + customerId
         return (
             fetch(fetchUrl)
                 .then(
