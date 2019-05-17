@@ -37,7 +37,7 @@ export function postPayment(payment) {
         const customerId = payment.payment_to
         payment.payment_from = 'FK'
         payment.description = 'TFP'
-        payment.date = payment.paymentDate
+        payment.payment_date = payment.paymentDate
         const postUrl = 'http://35.228.149.52/payments/' + customerId
         return (
             fetch(postUrl, {

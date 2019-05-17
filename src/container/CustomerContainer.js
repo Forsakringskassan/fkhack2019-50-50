@@ -48,7 +48,7 @@ function NewPaymentModal(props) {
 function Payments(props) {
     const payments = props.payments ? props.payments.map(p => {
         return (
-            <Table.Row>
+            <Table.Row key={p.id}>
                 <Table.Cell>{p.payment_date}</Table.Cell>
                 <Table.Cell>{p.creation_date}</Table.Cell>
                 <Table.Cell>{p.payment_from}</Table.Cell>

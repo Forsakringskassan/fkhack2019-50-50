@@ -26,7 +26,12 @@ function handleRequestPaymentSuccess(state, action) {
     
     action.payments._embedded['rel:payment'].forEach(payment => {
         const customerId = payment.payment_to
-        newstate.byCustomerId[customerId] = [payment]
+
+        if(!newstate.byCustomerId[customerId]) {
+            newstate.byCustomerId[customerId] = []  
+        }
+
+        newstate.byCustomerId[customerId].push(payment)
     })
 
     return newstate
