@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Form, Input, Header, Table, Modal, Button, Icon } from 'semantic-ui-react'
+import { Container, Form, Input, Header, Table, Modal, Button, Icon, Tab } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { fetchCustomer, selectCustomer } from '../action/CustomerEntityAction'
 import { fetchPayment } from '../action/PaymentEntityAction'
@@ -49,12 +49,14 @@ function Payments(props) {
     const payments = props.payments ? props.payments.map(p => {
         return (
             <Table.Row>
-                <Table.Cell>{props.payment_date}</Table.Cell>
-                <Table.Cell>{props.creation_date}</Table.Cell>
-                <Table.Cell>{props.payment_from}</Table.Cell>
-                <Table.Cell>{props.payment_to}</Table.Cell>
-                <Table.Cell>{props.amount}</Table.Cell>
-                <Table.Cell>{props.currency}</Table.Cell>
+                <Table.Cell>{p.payment_date}</Table.Cell>
+                <Table.Cell>{p.creation_date}</Table.Cell>
+                <Table.Cell>{p.payment_from}</Table.Cell>
+                <Table.Cell>{p.payment_to}</Table.Cell>
+                <Table.Cell>{p.amount}</Table.Cell>
+                <Table.Cell>{p.currency}</Table.Cell>
+                <Table.Cell>{p.status}</Table.Cell>
+                <Table.Cell>{p.description}</Table.Cell>
             </Table.Row>
         )
     }) : []
@@ -69,6 +71,8 @@ function Payments(props) {
                     <Table.HeaderCell>To</Table.HeaderCell>
                     <Table.HeaderCell>Amount</Table.HeaderCell>
                     <Table.HeaderCell>Currency</Table.HeaderCell>
+                    <Table.HeaderCell>Status</Table.HeaderCell>
+                    <Table.HeaderCell>Description</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
 

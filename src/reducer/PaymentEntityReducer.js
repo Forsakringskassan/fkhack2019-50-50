@@ -20,13 +20,13 @@ function handleRequestPayment(state, action) {
 function handleRequestPaymentSuccess(state, action) {
     const newstate = Object.assign({}, state, { isBusy: false })
 
-    if(!action.payments || !action.payments._emdedded) {
+    if(!action.payments || !action.payments._embedded) {
         return newstate
     }
     
-    action.payments._emdedded.forEach(payment => {
-        const customerId = payment.to
-        newstate.byCustomerId[customerId] = payment
+    action.payments._embedded['rel:payment'].forEach(payment => {
+        const customerId = payment.payment_to
+        newstate.byCustomerId[customerId] = [payment]
     })
 
     return newstate
